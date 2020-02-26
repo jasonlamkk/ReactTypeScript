@@ -1,0 +1,34 @@
+type VoteOption {
+    id: ID!    
+    label: String!
+    background: String!
+    voteCount: Int!
+}
+
+type Vote {
+    id: ID!    
+    ip: String!    
+    timestamp: Int!
+    option: VoteOption!
+}
+
+type Query {
+    allVoteOptions: [VoteOption!]!
+}
+
+type Mutation {
+  createVoteOption(
+    background: String!
+    label: String!
+  ): VoteOption
+  createVote(
+    ip: String!
+    timestamp: Int!
+    optionId: ID!
+  ): Vote
+}
+
+schema {
+    query: Query
+    mutation: Mutation
+}

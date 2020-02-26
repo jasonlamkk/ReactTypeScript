@@ -1,0 +1,15 @@
+overwrite: true
+schema: "http://localhost:4000/graphql"
+documents: './src/models/**/*.ts'
+config:
+  withHooks: true
+  withComponent: false
+  namingConvention:
+    typeNames: pascal-case#pascalCase
+    transformUnderscore: true
+generates:
+  src/models/react.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo

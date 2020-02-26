@@ -1,0 +1,67 @@
+type VoteOption @entity {
+    """
+    Vote Option ID.
+    """
+    id: ID! @id 
+    """
+    Vote Option display label.
+    """
+    label: String! @column
+    """
+    Vote Option background CSS class.
+    """
+    background: String! @column
+
+    """
+    Total votes
+    """
+    voteCount: Int! @column
+    """
+    All votes
+    """
+    votes: [Int!] @column
+}
+
+type VoteCount {
+    id: String!
+    voteCount: Int!
+}
+
+type VotesBetweenTime {
+    diffSecond: Int!
+    statistic: [VoteCount!]!
+}
+
+type VotesStatistic {
+    options: [VoteOption!]!
+    votes: [VotesBetweenTime!]!
+}
+
+type Vote @entity {
+    id: ID! @id 
+    ip: String! @column
+    timestamp: Int! @column 
+    option: VoteOption! @link
+}
+
+type Query {
+    allVoteOptions: [VoteOption!]!
+    recentVotes(seconds: Int!): VotesStatistic!
+}
+
+type Mutation {
+    createVoteOption(
+        background: String!
+        label: String!
+    ): VoteOption
+    createVote(
+        ip: String!
+        timestamp: Int!
+        optionId: ID!
+    ): Vote
+}
+
+schema {
+    query: Query
+    mutation: Mutation
+}

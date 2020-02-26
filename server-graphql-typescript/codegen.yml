@@ -1,0 +1,15 @@
+overwrite: true
+schema: "./vote-dev.graphql"
+documents: null
+config:
+  namingConvention:
+    typeNames: pascal-case#pascalCase
+    transformUnderscore: true
+generates:
+  src/models/mongo.ts:
+    plugins:
+      - "typescript"
+      - "typescript-mongodb"
+  ./graphql.schema.json:
+    plugins:
+      - "introspection"

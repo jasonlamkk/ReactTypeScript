@@ -1,0 +1,35 @@
+{
+  "name": "server-graphql-typescript",
+  "version": "1.0.0",
+  "description": "demo",
+  "main": "server.js",
+  "author": "Jason Lam",
+  "license": "ARR",
+  "private": true,
+  "devDependencies": {
+    "@graphql-codegen/cli": "^1.12.2",
+    "@graphql-codegen/introspection": "^1.12.2",
+    "@graphql-codegen/typescript": "^1.12.2",
+    "@graphql-codegen/typescript-mongodb": "^1.12.2",
+    "@graphql-codegen/typescript-operations": "^1.12.2",
+    "@types/mongodb": "^3.3.16",
+    "@types/webpack-env": "^1.15.1",
+    "clean-webpack-plugin": "^3.0.0",
+    "ts-loader": "^6.2.1",
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11",
+    "webpack-merge": "^4.2.2",
+    "webpack-node-externals": "^1.7.2"
+  },
+  "scripts": {
+    "build": "webpack --config webpack.$NODE_ENV.js",
+    "start": "node dist/server",
+    "genmodel": "graphql-codegen --config codegen.yml"
+  },
+  "dependencies": {
+    "apollo-server": "^2.10.1",
+    "dotenv": "^8.2.0",
+    "mongodb": "^3.5.3",
+    "typescript": "^3.7.5"
+  }
+}
