@@ -23,8 +23,7 @@ const IntervalContainer = () => {
         pollInterval={500}
     >
         {(result: QueryResult): JSX.Element => {
-            console.log("raw", result);
-            const {loading, error, data}: {loading: boolean, error?: ApolloError, data: ResultData|undefined} = result;
+            const {loading, error, data}: {loading: boolean; error?: ApolloError; data: ResultData|undefined} = result;
             return MakeDashboard(loading, data?data.recentVotes:undefined, error)
         }}
     </Query>

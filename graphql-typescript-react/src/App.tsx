@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import { IntervalContainer,  VoteContainer } from './containers';
+import { PreSocketContainer,  VoteContainer } from './containers';
 import './App.css';
 
 function NavMenu(): JSX.Element {
@@ -28,13 +28,10 @@ function Home(): JSX.Element {
 
 const App = () => <Router>
   <div className="App">
-    <header className="App-header">
-      <NavMenu />
-    </header>
     <section>
       <Switch>
         <Route path="/dashboard">
-          <IntervalContainer />
+          <PreSocketContainer />
         </Route>
         <Route path="/client">
           <VoteContainer />

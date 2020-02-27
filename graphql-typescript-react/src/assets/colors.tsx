@@ -10,7 +10,7 @@ const colors = {
 };
 
 const colorMap: ColorMap = {};
-Object.entries(colors).forEach(([key, value]):void => {
+Object.entries(colors).forEach(([key, value]): void => {
     colorMap[key] = value;
 })
 

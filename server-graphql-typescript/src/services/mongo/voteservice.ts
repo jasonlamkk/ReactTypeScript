@@ -4,6 +4,8 @@ import { MongoDbProvider } from '../../dbprovider/mongodb'
 import { dbVote2Vote, dbVoteOption2VoteOption } from '../../models/convertor'
 import { MutationCreateVoteArgs, VoteOption, VoteCount, Vote, VoteDbObject, VoteOptionDbObject, VotesBetweenTime, VotesStatistic } from '../../models/mongo';
 
+import GameListener from '../interface/gamelistener';
+
 type Int = number & { __int__: void };
 
 type VoteGroup = {
@@ -18,11 +20,13 @@ function groupByInt(ns: Array<Int>, second: number): number {
 class VoteService implements IVoteService {
 
     private provider: MongoDbProvider
+    private gameNotifier: GameListener
 
     private errorCount: number
 
-    constructor(mongo: MongoDbProvider){
+    constructor(mongo: MongoDbProvider, gameNotifier: GameListener){
         this.provider = mongo;
+        this.gameNotifier = gameNotifier;
         this.errorCount = 0
     }
 
@@ -71,7 +75,6 @@ class VoteService implements IVoteService {
     async getRecentVotes(seconds: number): Promise<VotesStatistic> {
         try{
             const ct: number = Date.now().valueOf();
-            console.log("SSS", seconds, typeof seconds, 1*seconds, (seconds).toString(), parseInt(seconds.toString()))
             const sInt: Int = parseInt(Math.floor(seconds).toString()) as Int;
             const zeroInt: Int = 0 as Int;
 
@@ -82,18 +85,14 @@ class VoteService implements IVoteService {
             const options: Array<VoteOption> = arr.map(dbVoteOption2VoteOption);
             
             const simplifiedGroups = arr.map((dbo: VoteOptionDbObject): VoteGroup => {
-                const voteTs: Int[] = dbo.votes ? dbo.votes.map((i)=> Math.floor((ct - i)/1000.0) as Int) : [];
-                console.log("V", dbo.votes, voteTs, voteTs.filter((i: Int)=>{
-                    console.log('c>', i, i>=zeroInt, `${i} < ${sInt}`, i<sInt);
-                    return i >= zeroInt && i < sInt
-                }));
+                const rawVotes: Int[] = dbo.votes ? dbo.votes.map((i)=> Math.floor((ct - i)/1000.0) as Int) : [];
+                const voteTs = rawVotes.filter((i: Int)=> i >= zeroInt && i < sInt);
                 return {
                     id: dbo._id.toHexString(),
                     voteTs
                 };
             });
 
-            console.warn('>>>',seconds, arr, simplifiedGroups);
 
             const votesBetweenTime: Array<VotesBetweenTime> = Array.from({length: seconds}, (_,i): VotesBetweenTime => {
                 const statistic: Array<VoteCount> = simplifiedGroups.map((v: VoteGroup): VoteCount => {
@@ -131,6 +130,9 @@ class VoteService implements IVoteService {
 
     async createVote(input: MutationCreateVoteArgs): Promise<Vote|null> {
         try{
+
+            this.gameNotifier(input.optionId);
+            
             const optId = new ObjectID(input.optionId);
 
             const opt = await this.provider.voteOptionsCollection.findOne<VoteOptionDbObject>({ _id: optId });

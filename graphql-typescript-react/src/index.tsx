@@ -8,7 +8,7 @@ import { ApolloProvider } from 'react-apollo';
 import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks';
 
 const apolloClient = new ApolloClient({
-    uri: '/',
+    uri: '/graphql',
   });
   
 
