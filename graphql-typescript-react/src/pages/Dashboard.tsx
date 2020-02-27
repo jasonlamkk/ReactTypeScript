@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './Dashboard.css';
 import { VoteOption, VotesBetweenTime, VoteCount } from '../models/react';
 import { VotesBetweenHalfSeconds } from '../models/custom';
 

@@ -92,15 +92,16 @@ wss.on('connection', function(ws, request) {
 
   ws.on('message', function(message) {
     // never happen
-
-    subGameLocks.acquire('games', function(done){
-      delete subGames[sessionId];
-      done();
-    });
     
   });
   ws.on('close', function() {
     // ignore
+    subGameLocks.acquire('games', function(done){
+      console.log("DEL", sessionId, subGames);
+      delete subGames[sessionId];
+      done();
+      console.log("DELTED", subGames);
+    });
   });
 });
 
