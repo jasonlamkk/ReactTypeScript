@@ -1,11 +1,18 @@
 import { VoteOption } from  '../../models/mongo';
 import VoteService from '../../services/interface/voteservice';
 
-const create_query_allVoteOptions = (service: VoteService) => {
+interface AllVoteOptionsResolver {
+    allVoteOptions: () => Promise<Array<VoteOption>>;
+}
+
+/**
+ * createQueryAllVoteOptions
+ * @param service VoteService injected VoteService 
+ */
+const createQueryAllVoteOptions = (service: VoteService): AllVoteOptionsResolver => {
     return {
-        allVoteOptions: async ():Promise<Array<VoteOption>> => await service.getVoteOptions()
+        allVoteOptions: async (): Promise<Array<VoteOption>> => await service.getVoteOptions()
     };
 }
 
-// const q:Query = new Query();
-export default create_query_allVoteOptions;
+export default createQueryAllVoteOptions;

@@ -7,8 +7,8 @@ import { MutationCreateVoteArgs, VoteOption, VoteCount, Vote, VoteDbObject, Vote
 type Int = number & { __int__: void };
 
 type VoteGroup = {
-    id: string,
-    voteTs: Array<Int>
+    id: string;
+    voteTs: Array<Int>;
 }
 
 function groupByInt(ns: Array<Int>, second: number): number {
@@ -19,7 +19,7 @@ class VoteService implements IVoteService {
 
     private provider: MongoDbProvider
 
-    private errorCount:number
+    private errorCount: number
 
     constructor(mongo: MongoDbProvider){
         this.provider = mongo;
@@ -34,7 +34,6 @@ class VoteService implements IVoteService {
             }
             return dbVoteOption2VoteOption(r);
         } catch ( ex ) {
-            console.error("ERROR:findVoteOptionById", ex);
             if (ex instanceof MongoError){
                 if (++this.errorCount > 3) {
                     throw ex;
@@ -48,7 +47,11 @@ class VoteService implements IVoteService {
     
     async getVoteOptions(): Promise<Array<VoteOption>> {
         try{
-            const all = await this.provider.voteOptionsCollection.find<VoteOptionDbObject>().sort({label:1}).limit(10);
+            const all = await this.provider.voteOptionsCollection
+                .find<VoteOptionDbObject>()
+                .filter(({label}: {label: string})=>!label)
+                .sort({label:1})
+                .limit(10);
             const arr: Array<VoteOptionDbObject> = await all.toArray();
             const options: Array<VoteOption> = arr.map(dbVoteOption2VoteOption);
             return options;
@@ -68,20 +71,32 @@ class VoteService implements IVoteService {
     async getRecentVotes(seconds: number): Promise<VotesStatistic> {
         try{
             const ct: number = Date.now().valueOf();
+            console.log("SSS", seconds, typeof seconds, 1*seconds, (seconds).toString(), parseInt(seconds.toString()))
+            const sInt: Int = parseInt(Math.floor(seconds).toString()) as Int;
+            const zeroInt: Int = 0 as Int;
 
-            const all: Cursor<VoteOptionDbObject> = await this.provider.voteOptionsCollection.find<VoteOptionDbObject>().sort({label:1}).limit(10);
+            const all: Cursor<VoteOptionDbObject> = await this.provider.voteOptionsCollection
+                .find<VoteOptionDbObject>()
+                .sort({label:1});
             const arr: Array<VoteOptionDbObject> = await all.toArray();
             const options: Array<VoteOption> = arr.map(dbVoteOption2VoteOption);
             
-            const simplifiedGroups = arr.map((dbo: VoteOptionDbObject):VoteGroup => {
+            const simplifiedGroups = arr.map((dbo: VoteOptionDbObject): VoteGroup => {
+                const voteTs: Int[] = dbo.votes ? dbo.votes.map((i)=> Math.floor((ct - i)/1000.0) as Int) : [];
+                console.log("V", dbo.votes, voteTs, voteTs.filter((i: Int)=>{
+                    console.log('c>', i, i>=zeroInt, `${i} < ${sInt}`, i<sInt);
+                    return i >= zeroInt && i < sInt
+                }));
                 return {
                     id: dbo._id.toHexString(),
-                    voteTs: dbo.votes ? dbo.votes.map((i)=>Math.floor((ct - i)/1000.0) as Int).filter((i)=>i >= 0 && i < seconds) : []
+                    voteTs
                 };
             });
 
-            const votesBetweenTime: Array<VotesBetweenTime> = Array.from({length: seconds}, (_,i):VotesBetweenTime => {
-                const statistic: Array<VoteCount> = simplifiedGroups.map((v:VoteGroup): VoteCount => {
+            console.warn('>>>',seconds, arr, simplifiedGroups);
+
+            const votesBetweenTime: Array<VotesBetweenTime> = Array.from({length: seconds}, (_,i): VotesBetweenTime => {
+                const statistic: Array<VoteCount> = simplifiedGroups.map((v: VoteGroup): VoteCount => {
                     
                     const count = groupByInt(v.voteTs, seconds - i - 1);
                     return {
@@ -96,7 +111,7 @@ class VoteService implements IVoteService {
                 }
             });
 
-            const vs : VotesStatistic = {
+            const vs: VotesStatistic = {
                 options,
                 votes: votesBetweenTime
             }

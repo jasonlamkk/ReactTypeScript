@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-let defaultPort = 4000;
+const defaultPort = 4000;
 
 interface Environment {
     apollo: {

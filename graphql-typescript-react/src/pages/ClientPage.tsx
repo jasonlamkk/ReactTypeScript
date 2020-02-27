@@ -3,15 +3,15 @@ import { VoteOption } from '../models/react';
 import CircleButton from '../components/atoms/CircleButton';
 
 interface Props {
-    options: Array<VoteOption>
-};
+    options: Array<VoteOption>;
+}
 
 class ClientPage extends Component<Props> {
     render() {
         const {options}: Props = this.props;
 
         return (<div>
-            {options ? options.map((o: VoteOption) => {
+            {options ? options.filter((o)=>o.label).map((o: VoteOption) => {
                 return (<CircleButton key={o.id} data={o}/>);
              }) : ''}
         </div>);

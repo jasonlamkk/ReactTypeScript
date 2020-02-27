@@ -1,4 +1,4 @@
-import { Collection, Db, MongoClient, ObjectID } from 'mongodb';
+import { Collection, Db, MongoClient } from 'mongodb';
 
 export class MongoDbProvider{
   private database?: Db;
@@ -14,7 +14,6 @@ export class MongoDbProvider{
   }
 
   async reconnect(): Promise<void> {
-    console.warn("try recoonect");
     this.mongoClient = new MongoClient(this.url, { useUnifiedTopology: true })
     await this.connectAsync()
   }

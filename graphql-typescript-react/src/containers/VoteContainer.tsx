@@ -1,9 +1,8 @@
 import * as React from 'react';
 import ClientPage from '../pages/ClientPage';
-import { useCreateVoteMutation, useVoteResultQuery, VoteOption } from '../models/react';
+import { useVoteResultQuery, VoteOption } from '../models/react';
 
-
-const VoteContainer = ({page}:{page: string }) => {
+const VoteContainer = () => {
   const { data, error, loading } = useVoteResultQuery();
   if (loading) {
     return <div>Loading...</div>;
@@ -13,7 +12,7 @@ const VoteContainer = ({page}:{page: string }) => {
   }
   const options: Array<VoteOption> = data.allVoteOptions;
 
-  options.sort((x:VoteOption,y:VoteOption)=> {
+  options.sort((x: VoteOption,y: VoteOption)=> {
     if (x.label < y.label) {
       return 1;
     }

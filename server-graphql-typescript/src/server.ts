@@ -3,6 +3,8 @@ import { ApolloServer } from 'apollo-server';
 import { environment } from './environment';
 import { MongoDbProvider } from './dbprovider/mongodb';
 import VoteService from './services/mongo/voteservice';
+import resolversFactory from './resolvers';
+import typeDefs from './models';
 
 /**
  * Add mock voteOptions if `voteOptions` collection is empty.
@@ -10,7 +12,6 @@ import VoteService from './services/mongo/voteservice';
  */
 async function addDefaultVoteOptionsAsync(mongoDbProvider: MongoDbProvider): Promise<void> {
   const voteOptionsCount = await mongoDbProvider.voteOptionsCollection.countDocuments();
-  console.warn(`On server boot: voteOptionsCount ${voteOptionsCount}`);
   if (voteOptionsCount === 0) {
     await mongoDbProvider.voteOptionsCollection.insertMany([
       {
@@ -20,30 +21,26 @@ async function addDefaultVoteOptionsAsync(mongoDbProvider: MongoDbProvider): Pro
       {
           label: "+",
           background: "blue"
-      },
+      }
     ]);
   }
 }
 
 
-import resolversFactory from './resolvers';
-import typeDefs from './models';
 
 (async function bootstrapAsync(): Promise<void> {
-    let mongoDbProvider = new MongoDbProvider(environment.mongoDb.url, environment.mongoDb.databaseName);
+    const mongoDbProvider = new MongoDbProvider(environment.mongoDb.url, environment.mongoDb.databaseName);
     
     await mongoDbProvider.connectAsync();
     await addDefaultVoteOptionsAsync(mongoDbProvider); // TODO: Remove in PROD.
   
     const voteService = new VoteService(mongoDbProvider);
 
-    const resolvers = resolversFactory(voteService);
+    const resolvers: any = resolversFactory(voteService); // any used to fit input of ApolloServer 
     
     const server = new ApolloServer({
       resolvers,
       typeDefs: [DIRECTIVES, typeDefs],
-      // 
-      // mocks: true,
       introspection: environment.apollo.introspection,
       playground: environment.apollo.playground,
     });

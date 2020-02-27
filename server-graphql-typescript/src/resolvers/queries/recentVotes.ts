@@ -1,15 +1,16 @@
 import { VotesStatistic } from  '../../models/mongo';
 import VoteService from '../../services/interface/voteservice';
 
-const create_query_recentVotes = (service: VoteService) => {
+interface RecentVotesResolver {
+    recentVotes: (ignore: any, {seconds}: {seconds: number}) => Promise<VotesStatistic>;
+}
+
+const createQueryRecentVotes = (service: VoteService): RecentVotesResolver => {
     return {
-        recentVotes: async (... args: any[]):Promise<VotesStatistic> => {
-            const { seconds } = args[1];
+        recentVotes: async (_, {seconds}: {seconds: number}): Promise<VotesStatistic> => {
             return await service.getRecentVotes(seconds);
-            // await service.getRecentVotes()
         }
     };
 }
 
-// const q:Query = new Query();
-export default create_query_recentVotes;
+export default createQueryRecentVotes;

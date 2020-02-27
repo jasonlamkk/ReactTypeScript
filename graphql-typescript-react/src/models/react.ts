@@ -5,17 +5,17 @@ import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: string,
-  String: string,
-  Boolean: boolean,
-  Int: number,
-  Float: number,
-  Upload: any,
+  ID: string;
+  String: string;
+  Boolean: boolean;
+  Int: number;
+  Float: number;
+  Upload: any;
 };
 
 export type AdditionalEntityFields = {
-  path?: Maybe<Scalars['String']>,
-  type?: Maybe<Scalars['String']>,
+  path?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
 };
 
 export enum CacheControlScope {
@@ -24,73 +24,73 @@ export enum CacheControlScope {
 }
 
 export type Mutation = {
-   __typename?: 'Mutation',
-  createVoteOption?: Maybe<VoteOption>,
-  createVote?: Maybe<Vote>,
+   __typename?: 'Mutation';
+  createVoteOption?: Maybe<VoteOption>;
+  createVote?: Maybe<Vote>;
 };
 
 
 export type MutationCreateVoteOptionArgs = {
-  background: Scalars['String'],
-  label: Scalars['String']
+  background: Scalars['String'];
+  label: Scalars['String'];
 };
 
 
 export type MutationCreateVoteArgs = {
-  ip: Scalars['String'],
-  timestamp: Scalars['Int'],
-  optionId: Scalars['ID']
+  ip: Scalars['String'];
+  timestamp: Scalars['Int'];
+  optionId: Scalars['ID'];
 };
 
 export type Query = {
-   __typename?: 'Query',
-  allVoteOptions: Array<VoteOption>,
-  recentVotes: VotesStatistic,
+   __typename?: 'Query';
+  allVoteOptions: Array<VoteOption>;
+  recentVotes: VotesStatistic;
 };
 
 
 export type QueryRecentVotesArgs = {
-  seconds: Scalars['Int']
+  seconds: Scalars['Int'];
 };
 
 
 export type Vote = {
-   __typename?: 'Vote',
-  id: Scalars['ID'],
-  ip: Scalars['String'],
-  timestamp: Scalars['Int'],
-  option: VoteOption,
+   __typename?: 'Vote';
+  id: Scalars['ID'];
+  ip: Scalars['String'];
+  timestamp: Scalars['Int'];
+  option: VoteOption;
 };
 
 export type VoteCount = {
-   __typename?: 'VoteCount',
-  id: Scalars['String'],
-  voteCount: Scalars['Int'],
+   __typename?: 'VoteCount';
+  id: Scalars['String'];
+  voteCount: Scalars['Int'];
 };
 
 export type VoteOption = {
-   __typename?: 'VoteOption',
-  id: Scalars['ID'],
-  label: Scalars['String'],
-  background: Scalars['String'],
-  voteCount: Scalars['Int'],
-  votes?: Maybe<Array<Scalars['Int']>>,
+   __typename?: 'VoteOption';
+  id: Scalars['ID'];
+  label: Scalars['String'];
+  background: Scalars['String'];
+  voteCount: Scalars['Int'];
+  votes?: Maybe<Array<Scalars['Int']>>;
 };
 
 export type VotesBetweenTime = {
-   __typename?: 'VotesBetweenTime',
-  diffSecond: Scalars['Int'],
-  statistic: Array<VoteCount>,
+   __typename?: 'VotesBetweenTime';
+  diffSecond: Scalars['Int'];
+  statistic: Array<VoteCount>;
 };
 
 export type VotesStatistic = {
-   __typename?: 'VotesStatistic',
-  options: Array<VoteOption>,
-  votes: Array<VotesBetweenTime>,
+   __typename?: 'VotesStatistic';
+  options: Array<VoteOption>;
+  votes: Array<VotesBetweenTime>;
 };
 
 export type CreateVoteMutationVariables = {
-  optionId: Scalars['ID']
+  optionId: Scalars['ID'];
 };
 
 
@@ -99,11 +99,11 @@ export type CreateVoteMutation = (
   & { createVote: Maybe<(
     { __typename?: 'Vote' }
     & Pick<Vote, 'id'>
-  )> }
+  )>; }
 );
 
 export type RecentVotesQueryVariables = {
-  seconds: Scalars['Int']
+  seconds: Scalars['Int'];
 };
 
 
@@ -114,15 +114,15 @@ export type RecentVotesQuery = (
     & { options: Array<(
       { __typename?: 'VoteOption' }
       & Pick<VoteOption, 'id' | 'label' | 'background'>
-    )>, votes: Array<(
+    )>; votes: Array<(
       { __typename?: 'VotesBetweenTime' }
       & Pick<VotesBetweenTime, 'diffSecond'>
       & { statistic: Array<(
         { __typename?: 'VoteCount' }
         & Pick<VoteCount, 'id' | 'voteCount'>
-      )> }
-    )> }
-  ) }
+      )>; }
+    )>; }
+  ); }
 );
 
 export type VoteResultQueryVariables = {};
@@ -133,7 +133,7 @@ export type VoteResultQuery = (
   & { allVoteOptions: Array<(
     { __typename?: 'VoteOption' }
     & Pick<VoteOption, 'id' | 'label' | 'background' | 'voteCount'>
-  )> }
+  )>; }
 );
 
 
@@ -155,7 +155,7 @@ export function withCreateVote<TProps, TChildProps = {}>(operationOptions?: Apol
       alias: 'createVote',
       ...operationOptions
     });
-};
+}
 
 /**
  * __useCreateVoteMutation__
@@ -208,7 +208,7 @@ export function withRecentVotes<TProps, TChildProps = {}>(operationOptions?: Apo
       alias: 'recentVotes',
       ...operationOptions
     });
-};
+}
 
 /**
  * __useRecentVotesQuery__
@@ -255,7 +255,7 @@ export function withVoteResult<TProps, TChildProps = {}>(operationOptions?: Apol
       alias: 'voteResult',
       ...operationOptions
     });
-};
+}
 
 /**
  * __useVoteResultQuery__

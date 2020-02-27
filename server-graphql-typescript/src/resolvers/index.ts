@@ -1,16 +1,21 @@
-import create_query_allVoteOptions from './queries/allVoteOptions';
-import create_query_recentVotes from './queries/recentVotes';
-import create_mutation_createVote from './mutations/createVote';
+import createQueryAllVoteOptions from './queries/allVoteOptions';
+import createQueryRecentVotes from './queries/recentVotes';
+import createMutationCreateVote from './mutations/createVote';
 
 import VoteService from '../services/interface/voteservice';
 
-const createResolvers = (service: VoteService) => {
+export interface GQLResolver {
+    Query: object;
+    Mutation: object;
+}
+
+const createResolvers = (service: VoteService): GQLResolver => {
     return {
         Query: {
-            ... create_query_allVoteOptions(service), 
-            ... create_query_recentVotes(service)
+            ... createQueryAllVoteOptions(service), 
+            ... createQueryRecentVotes(service)
         },
-        Mutation: { ... create_mutation_createVote(service) }
+        Mutation: { ... createMutationCreateVote(service) }
     };
 }
 
