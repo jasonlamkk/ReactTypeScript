@@ -73,7 +73,8 @@ class SocketContainer extends React.Component<PreSocketProps, SocketState> {
 
     public componentDidMount() {
         const host = window.location.host;
-        const ws = new WebSocket(`ws://${host}/game`);
+        const tls = window.location.protocol.indexOf('s:');
+        const ws = new WebSocket(`${tls?'wss':'ws'}://${host}/game`);
         ws.onopen = () => {
             setTimeout(()=>{
                 ws.close();
