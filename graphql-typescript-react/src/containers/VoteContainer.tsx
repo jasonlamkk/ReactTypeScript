@@ -1,8 +1,8 @@
-import * as React from 'react';
+import React from 'react';
 import ClientPage from '../pages/ClientPage';
 import { useVoteResultQuery, VoteOption } from '../models/react';
 
-const VoteContainer = () => {
+const VoteContainer = (): JSX.Element => {
   const { data, error, loading } = useVoteResultQuery();
   if (loading) {
     return <div>Loading...</div>;

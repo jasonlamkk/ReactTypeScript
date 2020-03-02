@@ -18,13 +18,13 @@ interface DynamicType {
 }
 
 function getOptionLabel(options: Array<VoteOption>, id: string): string {
-    return options.find((o)=>o.id === id)!!.background
+    const opt = options.find((o)=>o.id === id);
+    return !opt ? '' : opt.background;
 }
 class Dashboard extends Component<Props> {
-    render() {
+    render(): JSX.Element {
         
         const {options, votes}: Props = this.props;
-        // console.log("V", votes);
         /**
          * sample
          * const data = [

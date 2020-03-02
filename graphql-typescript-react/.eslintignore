@@ -7,3 +7,11 @@ coverage
 
 # don't lint webpack.*.js
 webpack.*.js
+
+#ignore auto generated
+src/models/react.ts
+
+#ignore framework provided script
+serviceWorker.ts
+global.d.ts
+react-redux.d.ts

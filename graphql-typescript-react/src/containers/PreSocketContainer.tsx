@@ -2,7 +2,7 @@ import * as React from 'react';
 import SocketContainer from './SocketContainer'
 import { useVoteResultQuery, VoteOption } from '../models/react';
 
-const PreSocketContainer = () => {
+const PreSocketContainer = (): JSX.Element => {
   const { data, error, loading } = useVoteResultQuery();
   if (loading) {
     return <div>Loading...</div>;

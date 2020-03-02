@@ -26,7 +26,7 @@ function Home(): JSX.Element {
   </div>;
 }
 
-const App = () => <Router>
+const App = (): JSX.Element => <Router>
   <div className="App">
     <section>
       <Switch>

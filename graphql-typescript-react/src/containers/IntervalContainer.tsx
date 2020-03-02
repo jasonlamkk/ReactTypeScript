@@ -14,7 +14,7 @@ const MakeDashboard = (loading: boolean, data?: VotesStatistic, error?: ApolloEr
     return <Dashboard options={options} votes={votes} />
 } 
 
-const IntervalContainer = () => {
+const IntervalContainer = (): JSX.Element => {
     return <Query 
         query={RecentVotesDocument}
         variables={{

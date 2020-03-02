@@ -7,7 +7,7 @@ interface Props {
 }
 
 class ClientPage extends Component<Props> {
-    render() {
+    render(): JSX.Element {
         const {options}: Props = this.props;
 
         return (<div>

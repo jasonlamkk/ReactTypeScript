@@ -30,7 +30,7 @@ type VoteGroup = {
 
 class SocketContainer extends React.Component<PreSocketProps, SocketState> {
 
-    constructor(props: any) {
+    constructor(props: PreSocketProps) {
         super(props);
         this.state = {
             votes: {},
@@ -43,7 +43,7 @@ class SocketContainer extends React.Component<PreSocketProps, SocketState> {
         const maxSlot = 10;
         const {votes} = this.state;
         const groups: Array<VoteGroup> = Object.entries(votes).map(([id, voteTimes]): VoteGroup=>{
-            const voteTs = voteTimes.map((ts) => Math.floor( (currentTime-ts) / 500).toFixed(0));
+            const voteTs = voteTimes.map((ts): string => Math.floor(maxSlot - 1 - (currentTime-ts) / 500).toFixed(0));
             return {
                 id,
                 voteTs
@@ -71,17 +71,17 @@ class SocketContainer extends React.Component<PreSocketProps, SocketState> {
         });
     }
 
-    public componentDidMount() {
+    public componentDidMount(): void {
         const host = window.location.host;
-        const tls = window.location.protocol.indexOf('s:');
+        const tls = window.location.protocol.indexOf('s:')>0;
         const ws = new WebSocket(`${tls?'wss':'ws'}://${host}/game`);
-        ws.onopen = () => {
-            setTimeout(()=>{
+        ws.onopen = (): void => {
+            setTimeout((): void=>{
                 ws.close();
                 this.onSummarize();
             }, 5000);
         }
-        ws.onmessage = (evt: MessageEvent) => {
+        ws.onmessage = (evt: MessageEvent): void => {
             const message: GameVoteMessage = JSON.parse(evt.data);
             if(message.voteTo) {
                 this.setState((prevState: SocketState) => {
@@ -98,7 +98,7 @@ class SocketContainer extends React.Component<PreSocketProps, SocketState> {
         };
     }
 
-    public render() {
+    public render(): JSX.Element {
         const {options} = this.props;
         const {votes} = this.state;
         const {chartData} = this.state;
