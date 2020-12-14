@@ -34,8 +34,8 @@
     "genmodel": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
-    "apollo-server": "^2.10.1",
-    "apollo-server-express": "^2.14.2",
+    "apollo-server": "^2.14.2",
+    "apollo-server-express": "^2.10.1",
     "async-lock": "^1.2.2",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
