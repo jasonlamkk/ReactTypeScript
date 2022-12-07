@@ -7,7 +7,7 @@
   "license": "ARR",
   "private": true,
   "devDependencies": {
-    "@graphql-codegen/cli": "^1.12.2",
+    "@graphql-codegen/cli": "^1.21.8",
     "@graphql-codegen/introspection": "^1.12.2",
     "@graphql-codegen/typescript": "^1.12.2",
     "@graphql-codegen/typescript-mongodb": "^1.12.2",
